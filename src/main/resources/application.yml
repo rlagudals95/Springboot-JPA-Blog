@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://database-2.cthnhpqt6mil.ap-northeast-2.rds.amazonaws.com:3306/test_data?serverTimezone=Asia/Seoul
+    username: root
+    password: cke5507k
