@@ -1,6 +1,42 @@
+server:
+  port: 8000
+  servlet:
+    context-path: /blog
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+
 spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
+    
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://database-2.cthnhpqt6mil.ap-northeast-2.rds.amazonaws.com:3306/test_data?serverTimezone=Asia/Seoul
     username: root
     password: cke5507k
+  
+  jpa:
+    open-in-view: true
+    hibernate:
+      ddl-auto: create # 실행할때 마다 테이블을 새로 만들겠다는 뜻! 최초에만 create => 후엔 update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl # entity를 만들 변수명 그대로 테이블에 넣어준다
+      use-new-id-generator-mappings: false #AUTO_INCREAMENT #FALSE => jpa가 제공하는 기본넘버링 사용x
+    show-sql: true
+    properties:
+      hibernate.format_sql: true
+
+  jackson:
+    serialization:
+      fail-on-empty-beans: false    
+  
+#http:
+#  encoding:
+#    charset: UTF-8
+#    enabled: true
+#    force: true
