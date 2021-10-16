@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Controller// Controller는 file return RestController는 데이터 return
 public class TempControllerTest {
 	
+	
+	
 	@GetMapping("/temp/home")
 	public String tempHome() {
 		// 파일리턴 기본경로 : src/main/resource/static
