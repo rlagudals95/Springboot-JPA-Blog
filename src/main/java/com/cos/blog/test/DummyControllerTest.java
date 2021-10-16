@@ -39,6 +39,7 @@ public class DummyControllerTest { // 1. 스프링 메모리로 뜰때
 		}catch (EmptyResultDataAccessException e){
 			return "해당 id 는 db에 존재하지 않습니다.";
 		}
+		
 			
 		return "삭제되었습니다. id : " + id;
 	}
