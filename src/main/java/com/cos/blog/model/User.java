@@ -31,7 +31,7 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)// jpa 넘버링전략이 아닌 프로젝트에서 연결된 DB의 넘버링 전략을 따라간다.
 	private int id; //시퀀스 , auto_increment
 	
-	@Column(nullable = false, length = 30) // column의 조건
+	@Column(nullable = false, length = 30, unique = true) // column의 조건 // 중복확인
 	private String username;
 	
 	@Column(nullable = false, length = 100)

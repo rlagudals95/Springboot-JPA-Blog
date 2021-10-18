@@ -19,7 +19,7 @@ import com.cos.blog.encrypt.EncryptionInterface;
 public class CommonDao {
 	
 	@Autowired 
-	@Qualifier("sqlSessionTemplate")
+	@Qualifier("batisSqlSessionTemplate")
 	private SqlSession sessionTemplate;
 
 	protected final Log log = LogFactory.getLog(getClass());
