@@ -12,43 +12,43 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.cos.blog.config.auth.PrincipaDetaillService;
 
-@Configuration
-@EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled= true)// 특정 주소로 접근하면 권한 및 인증을 미리체크
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+// 빈 등록 : 스프링 컨테이너에서 객체를 관리할 수 있게 하는 것
+
+@Configuration // 빈등록 (IoC관리)
+@EnableWebSecurity // 시큐리티 필터가 등록이 된다.
+//Controller에서 특정 권한이 있는 유저만 접근을 허용하려면 @PreAuthorize 어노테이션을 사용하는데, 해당 어노테이션을 활성화 시키는 어노테이션이다.
+@EnableGlobalMethodSecurity(prePostEnabled = true) 
+public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Autowired
-	private PrincipaDetaillService principaDetaillService; // 로그인 시 유저네임 db에서 찾고 패스워드 비교
+	private PrincipaDetaillService principalDetailService;
 	
-	@Bean // ioc가 된다
+	@Bean // IoC가 되요!!
 	public BCryptPasswordEncoder encodePWD() {
-		return new BCryptPasswordEncoder(); // 리턴 값을 스프링이 관리함
+		return new BCryptPasswordEncoder();
 	}
 	
-	// 시큐리티가 대신 로그인 해주는데 password를 가로채기를 한다
+	// 시큐리티가 대신 로그인해주는데 password를 가로채기를 하는데
 	// 해당 password가 뭘로 해쉬가 되어 회원가입이 되었는지 알아야
-	// 같은 해쉬로 암호화해서 DB에 있는 해쉬랑 비교할 수 있다.
+	// 같은 해쉬로 암호화해서 DB에 있는 해쉬랑 비교할 수 있음.
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(principaDetaillService).passwordEncoder(encodePWD()); // db에서 일치하는 username이 있나 확인후 일치하는 암호화된 패스워드도 있나 확인
+		auth.userDetailsService(principalDetailService).passwordEncoder(encodePWD());
 	}
 	
-	
 	@Override
-	protected void configure(HttpSecurity http) throws Exception {	
+	protected void configure(HttpSecurity http) throws Exception {
 		http
-			.csrf().disable()
+		.cors().and()
+			.csrf().disable()  // csrf 토큰 비활성화 (테스트시 걸어두는 게 좋음)
 			.authorizeRequests()
-				.antMatchers("/auth/**") // 여기로 오는 요청은
-				.permitAll() // 인증 없이 가능
-				.anyRequest() // 이외의 요청은
-				.authenticated() // 인증되야해
+				.antMatchers("/", "/auth/**", "/js/**", "/css/**", "/image/**")
+				.permitAll()
+				.anyRequest()
+				.authenticated()
 			.and()
-			.formLogin()
-				/*
-				 * .usernameParameter("username") .passwordParameter("password")
-				 */
-			.loginProcessingUrl("/auth/login"); // 해당 주소로 요청이 오면 스프링 시큐리티가 로그인을 가로챈다. 대신 로그인
-			
+				.formLogin()
+				.loginProcessingUrl("/auth/login")
+				.defaultSuccessUrl("/"); // 스프링 시큐리티가 해당 주소로 요청오는 로그인을 가로채서 대신 로그인 해준다.
 	}
 }

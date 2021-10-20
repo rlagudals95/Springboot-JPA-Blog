@@ -20,6 +20,7 @@ public class PrincipaDetaillService implements UserDetailsService{
 	// username만 db에 있는지 확인 해주면 됨.
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		System.out.println("qtqtqtq"+username);
 		User principal = userRepository.findByUsername(username)
 				.orElseThrow(()->{
 					return new UsernameNotFoundException("해당 사용자를 찾을 수 없습니다. : "+username);
